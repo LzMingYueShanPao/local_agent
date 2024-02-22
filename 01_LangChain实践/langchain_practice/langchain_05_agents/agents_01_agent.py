@@ -3,21 +3,22 @@ from common import constants
 from langchain.llms import OpenAI
 from langchain.agents import load_tools, initialize_agent, AgentType
 
-os.environ["http_proxy"] = "http://127.0.0.1:7890"
-os.environ["https_proxy"] = "http://127.0.0.1:7890"
+os.environ["http_proxy"] = "http://127.0.0.1:1080"
+os.environ["https_proxy"] = "http://127.0.0.1:1080"
 
 llm = OpenAI(openai_api_key=constants.API_KEY)
 
 # 通过预设名称加载tools
+# 加载数学文献库tools
 tools = load_tools(["arxiv"])
 
 # 初始化agent
 agent = initialize_agent(tools, llm, agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION, verbose=True)
 
 # 运行agent
-agent.run("介绍一下2203.02155这篇论文的创新点?")
+agent.run("介绍一下2203.02155这篇论文的创新点，使用中文进行回答?")
 # > Entering new AgentExecutor chain...
-#  了解论文的内容
+#  I should use the arxiv tool to search for the paper and read its abstract
 # Action: arxiv
 # Action Input: 2203.02155
 # Observation: Published: 2022-03-04
@@ -42,5 +43,6 @@ agent.run("介绍一下2203.02155这篇论文的创新点?")
 # InstructGPT still makes simple mistakes, our results show that fine-tuning with
 # human feedback is a promising direction for aligning language models with human
 # intent.
-# Thought: 这篇论文提出了InstructGPT，它可以通过人工反馈来调整大型语言模型，以满足用户的意图。
-# Final Answer: 这篇论文提出了InstructGPT，一种可以通过人工反馈来调整大型语言模型，以满足用户意图的技术，并且可以训练出更真实、更不毒性的输出，而且可以有效地改善公共NLP数据
+# Thought: The paper concludes that fine-tuning language models with human feedback is a promising approach for improving their alignment with user intent and generating more helpful and accurate outputs.
+# Thought: I now know the final answer
+# Final Answer: The paper's main innovative point is the use of human feedback for fine-tuning language models to align them with user intent.

@@ -64,17 +64,14 @@ def gpt_3_5_turbo(input_content):
         "Content-Type": "application/json",
         "Authorization": constants.AUTHORIZATION
     }
-
     data = {"model": "gpt-3.5-turbo",
             "messages": [{
                 "role": "user",
                 "content": input_content}]
             }
-
     try:
         start = time.time()
-        response = requests.post('https://api.openai.com/v1/chat/completions', headers=headers,
-                                 json=data, timeout=100)
+        response = requests.post('https://api.openai.com/v1/chat/completions', headers=headers,json=data, timeout=100)
         # {
         #   "id": "chatcmpl-7ZeuYFJwArOcjgUqmGQw4rb6GuRQf",
         #   "object": "chat.completion",
@@ -119,5 +116,6 @@ def gpt_3_5_turbo(input_content):
 
 if __name__ == "__main__":
     open_ai_init()
-    res_content = text_davinci_003('世界上最大的淡水湖泊')
+    # res_content = text_davinci_003('世界上最大的淡水湖泊')
+    res_content = gpt_3_5_turbo('世界上最大的淡水湖泊')
     print(res_content)

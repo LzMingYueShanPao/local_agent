@@ -1,4 +1,3 @@
-
 import os
 from common import constants
 from langchain.chat_models import ChatOpenAI
@@ -7,8 +6,8 @@ from langchain.schema import (
     SystemMessage
 )
 
-os.environ["http_proxy"] = "http://127.0.0.1:7890"
-os.environ["https_proxy"] = "http://127.0.0.1:7890"
+os.environ["http_proxy"] = "http://127.0.0.1:1080"
+os.environ["https_proxy"] = "http://127.0.0.1:1080"
 
 # 创建 Chat Model
 chat = ChatOpenAI(openai_api_key=constants.API_KEY)

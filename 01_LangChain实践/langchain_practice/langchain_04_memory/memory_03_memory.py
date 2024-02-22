@@ -4,8 +4,8 @@ from langchain.chat_models import ChatOpenAI
 from langchain.chains import ConversationChain
 from langchain.memory import ConversationSummaryMemory
 
-os.environ["http_proxy"] = "http://127.0.0.1:7890"
-os.environ["https_proxy"] = "http://127.0.0.1:7890"
+os.environ["http_proxy"] = "http://127.0.0.1:1080"
+os.environ["https_proxy"] = "http://127.0.0.1:1080"
 
 chat = ChatOpenAI(openai_api_key=constants.API_KEY)
 

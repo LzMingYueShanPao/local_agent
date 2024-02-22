@@ -1,15 +1,14 @@
-
 import os
 from common import constants
 from langchain.llms import OpenAI
 
-os.environ["http_proxy"] = "http://127.0.0.1:7890"
-os.environ["https_proxy"] = "http://127.0.0.1:7890"
+os.environ["http_proxy"] = "http://127.0.0.1:1080"
+os.environ["https_proxy"] = "http://127.0.0.1:1080"
 
 llm = OpenAI(openai_api_key=constants.API_KEY)
 
 # __call__: string in -> string out
-# 使用LLM最简单的方式是通过调用：传入一个字符串，获取一个字符串的完成结果。
+# 使用LLM最简单的方式是通过调用：传入一个字符串，获取一个字符串结果。
 single_response = llm("讲一个笑话吧")
 print(single_response)
 # 一只熊跟一只狐狸正在河边聊天，熊问狐狸：“你有没有船？”狐狸说：“没有，你有吗？”

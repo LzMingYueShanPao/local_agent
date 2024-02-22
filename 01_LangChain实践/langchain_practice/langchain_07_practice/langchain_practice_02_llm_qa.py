@@ -1,4 +1,3 @@
-
 import os
 from langchain.document_loaders import TextLoader
 from langchain.text_splitter import CharacterTextSplitter
@@ -14,8 +13,8 @@ from langchain.prompts.chat import (
     HumanMessagePromptTemplate,
 )
 
-os.environ["http_proxy"] = "http://127.0.0.1:7890"
-os.environ["https_proxy"] = "http://127.0.0.1:7890"
+os.environ["http_proxy"] = "http://127.0.0.1:1080"
+os.environ["https_proxy"] = "http://127.0.0.1:1080"
 
 DATA_PATH = './data/qa_document.txt'
 VECTOR_STORE_PATH = './vector_storage/local_vector_llm'
@@ -42,6 +41,10 @@ human_message_prompt = HumanMessagePromptTemplate.from_template(human_template)
 
 # 构建 Chat Template
 chat_prompt = ChatPromptTemplate.from_messages([system_message_prompt, human_message_prompt])
+# input_variables=['content', 'query'] messages=[SystemMessagePromptTemplate(prompt=PromptTemplate(input_variables=[],
+# template='你是一个人工智能助手，会根据提供的上下文信息给出准确的回答，如果提供的上下文中没有问题的答案，请说不知道。')),
+# HumanMessagePromptTemplate(prompt=PromptTemplate(input_variables=['content', 'query'],
+# template='上下文信息：{content}，用户问题：{query}'))]
 print(chat_prompt)
 
 # 构建 Chain
@@ -52,6 +55,11 @@ loader_documents = loader.load()
 
 # 切分 Document
 documents = text_splitter.split_documents(loader_documents)
+# [Document(page_content='在这份年度盈利情况汇报中，我们将向大家分享AI-Brain科技有限公司在过去一年中取得的关键成果和财务状况', metadata={'source': './data/qa_document.txt'}),
+# Document(page_content='我们非常自豪地宣布，今年是我们取得了显著的成功，并实现了广泛而稳定的盈利增长', metadata={'source': './data/qa_document.txt'}),
+# ......
+# Document(page_content='总体概述\n在过去的财政年度（2022-06-30至2023-06-30），AI-Brain科技有限公司实现了强劲的盈利增长', metadata={'source': './data/qa_document.txt'}),
+# Document(page_content='同时，我们也将继续优化成本结构，并寻找新的增长机会。', metadata={'source': './data/qa_document.txt'})]
 print(documents)
 
 # 判断是否已经有本地生成的 Embedding Vector

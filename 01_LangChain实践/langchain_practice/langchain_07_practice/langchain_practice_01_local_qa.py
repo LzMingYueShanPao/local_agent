@@ -1,4 +1,3 @@
-
 import os
 from common import constants
 from langchain.document_loaders import TextLoader
@@ -6,8 +5,8 @@ from langchain.text_splitter import CharacterTextSplitter
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import FAISS
 
-os.environ["http_proxy"] = "http://127.0.0.1:7890"
-os.environ["https_proxy"] = "http://127.0.0.1:7890"
+os.environ["http_proxy"] = "http://127.0.0.1:1080"
+os.environ["https_proxy"] = "http://127.0.0.1:1080"
 
 DATA_PATH = './data/qa_data.txt'
 VECTOR_STORE_PATH = './vector_storage/local_vector'
