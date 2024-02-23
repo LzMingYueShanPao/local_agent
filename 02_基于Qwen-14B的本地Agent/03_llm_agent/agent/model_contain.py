@@ -1,5 +1,5 @@
 
-## 传递模型和对应的知识库介绍的全局变量
+## 传递模型和对应的知识库介绍的全局变量model
 class ModelContainer:
     def __init__(self):
         self.MODEL = None

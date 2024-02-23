@@ -6,9 +6,9 @@ from langchain.schema import AgentAction, AgentFinish
 
 
 class CustomPromptTemplate(StringPromptTemplate):
-    # The template to use
+    # The template to use 要使用的模板
     template: str
-    # The list of tools available
+    # The list of tools available 可用工具列表
     tools: List[Tool]
 
     def format(self, **kwargs) -> str:

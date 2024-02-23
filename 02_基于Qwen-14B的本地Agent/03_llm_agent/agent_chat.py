@@ -11,6 +11,7 @@ from typing import List
 from agent.chat.history import History
 from langchain.chat_models import ChatOpenAI
 from agent.model_contain import model_container
+from common import constants
 
 
 def agent_chat(query: str = Body(..., description="用户输入", examples=["恼羞成怒"]),
@@ -37,6 +38,8 @@ def agent_chat(query: str = Body(..., description="用户输入", examples=["恼
         model_name=model_name,
         temperature=temperature
     )
+    # 这些先使用open的模型，后面搭建千问之后再把这行代码注释掉
+    model = ChatOpenAI(openai_api_key=constants.API_KEY)
 
     # 配置全局model
     model_container.MODEL = model
@@ -88,9 +91,9 @@ def agent_chat(query: str = Body(..., description="用户输入", examples=["恼
 
 if __name__ == '__main__':
     data = {
-        # "query": '使用合适的工具翻译：我用周末的时间学习人工智能',
+        "query": '使用合适的工具翻译：我用周末的时间学习人工智能',
         # "query": '北京市朝阳区的温度',
-        "query": '100的平方根结果的三次方',
+        # "query": '100的平方根结果的三次方',
         "history": [],
         "stream": True,
         "model_name": 'Qwen-14B-Chat',

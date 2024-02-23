@@ -8,6 +8,7 @@ import re
 import warnings
 from typing import Dict
 from common.constants import *
+from common import constants
 
 from langchain.callbacks.manager import (
     AsyncCallbackManagerForChainRun,
@@ -22,6 +23,10 @@ import requests
 from typing import List, Any, Optional
 from langchain.prompts import PromptTemplate
 from agent.model_contain import model_container
+from langchain.chat_models import ChatOpenAI
+
+os.environ["http_proxy"] = "http://127.0.0.1:1080"
+os.environ["https_proxy"] = "http://127.0.0.1:1080"
 
 
 _PROMPT_TEMPLATE = """
@@ -113,6 +118,7 @@ def get_weather(key, location_id, place):
         'key': key,
     }
     response = requests.get(url, params=params)
+    print('response=',response)
     data = response.json()
     return format_weather_data(data)
 
@@ -125,6 +131,7 @@ def split_query(query):
 
 
 def weather(query):
+    print('query=', query)
     location, adm= split_query(query)
     key = WEATHER_KEY
     if key == "":
@@ -132,13 +139,16 @@ def weather(query):
     try:
         # 获取 city_info
         city_info = get_city_info(location=location, adm=adm, key=key)
+        print('city_info=', city_info)
         location_id = city_info['location'][0]['id']
         place = adm + "市" + location + "区"
+        print('location_id=', location_id)
+        print('place=', place)
 
         # 根据 city_info 查询天气情况
         weather_data = get_weather(key=key, location_id=location_id,place=place)
+        print('weather_data=', weather_data)
         print('###' * 100)
-        print(weather_data)
         return weather_data + "以上是查询到的天气信息，请你查收\n"
     except KeyError:
         try:
@@ -148,7 +158,7 @@ def weather(query):
             weather_data = get_weather(key=key, location_id=location_id,place=place)
             return weather_data + "重要提醒：用户提供的市和区中，区的信息不存在，或者出现错别字，因此该信息是关于市的天气，请你查收\n"
         except KeyError:
-            return "输入的地区不存在，无法提供天气预报"
+            return "输入的地区不存在，无法提供天气预报（和风天气获取的数据返回结果为response= <Response [200]>）"
 
 
 class LLMWeatherChain(Chain):
@@ -305,5 +315,20 @@ def weathercheck(query: str):
 
 
 if __name__ == '__main__':
-    result = weathercheck("苏州姑苏区今晚热不热？")
+    # 创建 model
+    model = ChatOpenAI(
+        streaming=True,
+        verbose=True,
+        callbacks=[],
+        # openai_api_key="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",
+        # openai_api_base="http://127.0.0.1:1080/v1",
+        openai_api_key="none",
+        openai_api_base="http://127.0.0.1:8000/v1",
+        model_name="gpt-3.5-turbo",
+        temperature=0.01
+    )
+    model = ChatOpenAI(openai_api_key=constants.API_KEY)
+    # 配置全局model
+    model_container.MODEL = model
+    result = weathercheck("苏州姑苏今晚热不热？")
     print(result)
